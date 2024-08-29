@@ -1,11 +1,30 @@
 variable "aws_budgets" {
-  description = "A map of AWS budgets to be created"
+  description = <<EOF
+   A map of AWS budgets to be created. Each budget includes the following keys:
+    - name: The unique name of the AWS budget.
+    - budget_type: The type of budget, e.g., COST, USAGE, SAVINGS_PLANS_UTILIZATION, etc.
+    - limit_amount: The monetary limit for the budget.
+    - limit_unit: The unit of currency for the budget, typically USD.
+    - cost_filters: A map of cost filters to apply to the budget, such as service or tag-based filters.
+    - cost_types: Specifies the types of costs included in the budget, with the following sub-keys:
+      - include_tax: Whether to include taxes in the budget.
+      - include_subscription: Whether to include subscriptions in the budget.
+      - use_blended: Whether to use blended costs (amortized cost across accounts) in the budget.
+    - time_unit: The time period unit for the budget, such as MONTHLY or QUARTERLY.
+    - notification_threshold_type: The type of threshold for notifications, either PERCENTAGE or ABSOLUTE_VALUE.
+    - notification_comparison_operator: The comparison operator for notifications, such as LESS_THAN, EQUAL_TO, or GREATER_THAN.
+    - time_period_start: The start date for the budget's time period.
+    - time_period_end: The end date for the budget's time period.
+    - notification_type: The type of notification, such as ACTUAL or FORECASTED.
+    - notification_threshold: The threshold amount or percentage for triggering a notification.
+    - subscriber_email_addresses: A list of email addresses to receive notifications.
+    EOF
   type = map(object({
     name         = string
     budget_type  = string
     limit_amount = number
     limit_unit   = string
-    cost_filters = map(string)
+    # cost_filters = map(string)
     cost_types = object({
       include_tax          = bool
       include_subscription = bool

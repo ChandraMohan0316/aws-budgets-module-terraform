@@ -1,3 +1,4 @@
+# CREATION OF AWS BUDGET 
 resource "aws_budgets_budget" "budget" {
   for_each          = var.aws_budgets
   name              = each.value.name
@@ -8,13 +9,14 @@ resource "aws_budgets_budget" "budget" {
   time_period_start = each.value.time_period_start
   time_period_end   = each.value.time_period_end
 
-  dynamic "cost_filter" {
-    for_each = each.value.cost_filters
-    content {
-      name   = cost_filter.key
-      values = [cost_filter.value]
-    }
-  }
+
+#   dynamic "cost_filter" {
+#     for_each = each.value.cost_filters
+#     content {
+#       name   = cost_filter.key
+#       values = [cost_filter.value]
+#     }
+#   }
 
   cost_types {
     include_tax          = each.value.cost_types.include_tax
@@ -22,6 +24,7 @@ resource "aws_budgets_budget" "budget" {
     use_blended          = each.value.cost_types.use_blended
   }
 
+  # SETTING THRESHOLDS AND NOTIFICATION
   notification {
     comparison_operator        = each.value.notification_comparison_operator
     notification_type          = each.value.notification_type
